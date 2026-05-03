@@ -1,0 +1,70 @@
+# ================================
+# DeliveryApp.UI (React + Vite) .gitignore
+# ================================
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+
+# Cache
+.cache/
+.parcel-cache/
+.eslintcache
+
+# Vite
+vite.config.ts.timestamp-*
+vite.config.js.timestamp-*
+
+# TypeScript
+*.tsbuildinfo
+
+# Temporary
+*.tmp
+*.temp
+
+# Testing
+/playwright-report/
+/test-results/
+
+# Storybook
+storybook-static/
+
+# Package managers
+.pnp/
+.pnp.js
+
+# Lock files (optional — keep if team standard requires)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Local uploads or generated assets
+public/uploads/
+src/generated/
