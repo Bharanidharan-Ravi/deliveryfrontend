@@ -1,14 +1,14 @@
 import { useEffect, useCallback, useRef, useState } from 'react';
-import { useQRScanner } from '../../hooks/useQRScanner';
-import { useDeliveryStore } from '../../store/useDeliveryStore';
+import { useQRScanner } from '../hooks/useQRScanner';
+import {useDeliveryWorkflowStore} from '../store/useDeliveryWorkflowStore';
 import { CameraControls } from './CameraControls';
 import { BlurIndicator } from './BlurIndicator';
 
 const SCANNER_ELEMENT_ID = 'qr-reader';
 
 export function QRScanner() {
-  const setScannedQR = useDeliveryStore((s) => s.setScannedQR);
-  const setStep = useDeliveryStore((s) => s.setStep);
+  const setScannedQR = useDeliveryWorkflowStore((s) => s.setScannedQR);
+  const setStep = useDeliveryWorkflowStore((s) => s.setStep);
   const [facingMode, setFacingMode] = useState('environment');
   const [torchOn, setTorchOn] = useState(false);
   const [zoom, setZoom] = useState(1.5);

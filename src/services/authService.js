@@ -1,4 +1,4 @@
-import apiClient from './apiClient';
+import apiClient from '../core/api/apiClient';
 
 export const authService = {
   /**

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { isBlurry, computeBlurScore } from '../../utils/blurDetection';
-import { config } from '../../config/appConfig';
+import { isBlurry, computeBlurScore } from '../../../utils/blurDetection';
+import { config } from '../../../config/appConfig';
 
 export function ImageValidator({ imageUrl, onResult }) {
   const [score, setScore] = useState(null);

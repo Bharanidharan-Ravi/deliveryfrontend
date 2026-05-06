@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { config } from '../config/appConfig';
-import { useAuthStore } from '../store/useAuthStore';
+import { config } from '../../config/appConfig';
+import { useAuthStore } from '../../store/useAuthStore';
 
 const apiClient = axios.create({
   baseURL: config.apiBaseUrl,

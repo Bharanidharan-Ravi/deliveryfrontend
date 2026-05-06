@@ -68,3 +68,4 @@ storybook-static/
 # Local uploads or generated assets
 public/uploads/
 src/generated/
+.env

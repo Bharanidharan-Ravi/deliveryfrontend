@@ -1,39 +1,42 @@
 import { useState } from 'react';
-import { useAuthStore } from '../../store/useAuthStore';
-import { useDeliveryStore } from '../../store/useDeliveryStore';
-import { authService } from '../../services/authService';
-import { getDeviceId } from '../../utils/deviceFingerprint';
-import { ErrorBanner } from '../common/ErrorBanner';
-import { Spinner } from '../common/Spinner';
+import { useAuthStore } from '../../../store/useAuthStore';
+import {useDeliveryWorkflowStore} from '../../delivery/store/useDeliveryWorkflowStore';
+import { authService } from '../../../services/authService';
+import { getDeviceId } from '../../../utils/deviceFingerprint';
+import { ErrorBanner } from '../../../components/common/ErrorBanner';
+import { Spinner } from '../../../components/common/Spinner';
+import { useLogin } from '../../../hooks/useLogin';
 
 export function LoginForm() {
-  const login = useAuthStore((s) => s.login);
-  const setStep = useDeliveryStore((s) => s.setStep);
-
+  const loginMutation = useLogin();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!username.trim() || !password.trim()) return;
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    setLoading(true);
-    setError(null);
+  if (!username.trim() || !password.trim()) return;
 
-    try {
-      const deviceId = getDeviceId();
-      const { token, user } = await authService.login({ username, password, deviceId });
-      login(token, user);
-      setStep(1); // Go to Dashboard
-    } catch (err) {
-      setError(err.response?.data?.message || 'Invalid credentials. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+  setError(null);
+
+  try {
+    const deviceId = getDeviceId();
+
+    await loginMutation.mutateAsync({
+      username,
+      password,
+      deviceId,
+    });
+  } catch (err) {
+    setError(
+      err.response?.data?.message ||
+      'Invalid credentials. Please try again.'
+    );
+  }
+};
 
   return (
     <div className="flex flex-col items-center justify-center min-h-full px-6 py-12">
@@ -102,10 +105,10 @@ export function LoginForm() {
         <button
           id="login-submit-btn"
           type="submit"
-          disabled={loading || !username || !password}
+          disabled={loginMutation.isPending || !username || !password}
           className="btn-primary w-full mt-2"
         >
-          {loading ? <Spinner size="sm" label="" /> : 'Sign In'}
+          {loginMutation.isPending ? <Spinner size="sm" label="" /> : 'Sign In'}
         </button>
       </form>
     </div>

@@ -1,22 +1,36 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export const useAuthStore = create(
   persist(
     (set) => ({
       token: null,
-      user: null, // { id, username, role, deviceId }
-      isAuthenticated: false,
+      user: null,
+      isHydrated: false,
 
       login: (token, user) =>
-        set({ token, user, isAuthenticated: true }),
+        set({
+          token,
+          user,
+        }),
 
       logout: () =>
-        set({ token: null, user: null, isAuthenticated: false }),
+        set({
+          token: null,
+          user: null,
+        }),
+
+      setHydrated: (value) =>
+        set({
+          isHydrated: value,
+        }),
     }),
     {
-      name: 'auth-storage',
-      storage: createJSONStorage(() => sessionStorage), // clears on tab close
+      name: "auth-storage",
+
+      onRehydrateStorage: () => (state) => {
+        state?.setHydrated(true);
+      },
     }
   )
 );

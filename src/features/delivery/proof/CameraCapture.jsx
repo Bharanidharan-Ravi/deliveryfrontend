@@ -1,12 +1,12 @@
 import { useRef, useState, useCallback } from 'react';
-import { useDeliveryStore } from '../../store/useDeliveryStore';
-import { isBlurry } from '../../utils/blurDetection';
-import { config } from '../../config/appConfig';
+import { useDeliveryWorkflowStore } from '../store/useDeliveryWorkflowStore';
+import { isBlurry } from '../../../utils/blurDetection';
+import { config } from '../../../config/appConfig';
 import { BlurIndicator } from '../scanner/BlurIndicator';
-import { Spinner } from '../common/Spinner';
+import { Spinner } from '../../../components/common/Spinner';
 
 export function CameraCapture({ onCaptured }) {
-  const setProofImage = useDeliveryStore((s) => s.setProofImage);
+  const setProofImage = useDeliveryWorkflowStore((s) => s.setProofImage);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const streamRef = useRef(null);

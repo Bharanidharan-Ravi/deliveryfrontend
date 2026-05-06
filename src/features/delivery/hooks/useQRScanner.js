@@ -1,8 +1,12 @@
-import { useEffect, useRef, useCallback } from 'react';
-import { Html5Qrcode } from 'html5-qrcode';
-import { config } from '../config/appConfig';
+import { useEffect, useRef, useCallback } from "react";
+import { Html5Qrcode } from "html5-qrcode";
+import { config } from "../../../config/appConfig";
 
-export function useQRScanner({ onScanSuccess, onScanError, facingMode = 'environment' }) {
+export function useQRScanner({
+  onScanSuccess,
+  onScanError,
+  facingMode = "environment",
+}) {
   const scannerRef = useRef(null);
   const isRunning = useRef(false);
 
@@ -21,20 +25,35 @@ export function useQRScanner({ onScanSuccess, onScanError, facingMode = 'environ
             useBarCodeDetectorIfSupported: true,
           },
         };
-
-        await scannerRef.current.start(
-          { facingMode },
-          scanConfig,
-          onScanSuccess,
-          onScanError
-        );
+        try {
+          await scannerRef.current.start(
+            {
+              facingMode,
+            },
+            scanConfig,
+            onScanSuccess,
+            onScanError,
+          );
+        } catch (err) {
+          console.warn(
+            "[QRScanner] Environment camera failed. Falling back to user camera.",
+          );
+          await scannerRef.current.start(
+            {
+              facingMode: "user",
+            },
+            scanConfig,
+            onScanSuccess,
+            onScanError,
+          );
+        }
 
         isRunning.current = true;
       } catch (err) {
-        console.error('[QRScanner] Failed to start:', err);
+        console.error("[QRScanner] Failed to start:", err);
       }
     },
-    [facingMode, onScanSuccess, onScanError]
+    [facingMode, onScanSuccess, onScanError],
   );
 
   const stop = useCallback(async () => {
@@ -43,7 +62,7 @@ export function useQRScanner({ onScanSuccess, onScanError, facingMode = 'environ
         await scannerRef.current.stop();
         scannerRef.current.clear();
       } catch (err) {
-        console.warn('[QRScanner] Stop error:', err);
+        console.warn("[QRScanner] Stop error:", err);
       } finally {
         isRunning.current = false;
       }

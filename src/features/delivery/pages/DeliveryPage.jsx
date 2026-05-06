@@ -1,23 +1,23 @@
 import { useEffect, useState } from 'react';
-import { useAuthStore } from '../store/useAuthStore';
-import { useDeliveryStore } from '../store/useDeliveryStore';
-import { deliveryService } from '../services/deliveryService';
-import { invoiceService } from '../services/invoiceService';
-import { uploadService } from '../services/uploadService';
-import { useGeolocation } from '../hooks/useGeolocation';
-import { useDeviceInfo } from '../hooks/useDeviceInfo';
+import { useAuthStore } from '../../../store/useAuthStore';
+import { useDeliveryWorkflowStore } from '../../../features/delivery/store/useDeliveryWorkflowStore';
+import { deliveryService } from '../../../services/deliveryService';
+import { invoiceService } from '../../../services/invoiceService';
+import { uploadService } from '../../../services/uploadService';
+import { useGeolocation } from '../../../hooks/useGeolocation';
+import { useDeviceInfo } from '../../../hooks/useDeviceInfo';
 
-import { Screen } from '../components/layout/Screen';
-import { LoginForm } from '../components/auth/LoginForm';
-import { StatsCard } from '../components/dashboard/StatsCard';
-import { ScanButton } from '../components/dashboard/ScanButton';
-import { QRScanner } from '../components/scanner/QRScanner';
-import { InvoiceCard } from '../components/invoice/InvoiceCard';
-import { CameraCapture } from '../components/proof/CameraCapture';
-import { ImageValidator } from '../components/proof/ImageValidator';
-import { Spinner } from '../components/common/Spinner';
-import { ErrorBanner } from '../components/common/ErrorBanner';
-import { ConfirmModal } from '../components/common/ConfirmModal';
+import { Screen } from '../../../layout/Screen';
+import { LoginForm } from '../../auth/pages/LoginForm';
+import { StatsCard } from '../../../components/dashboard/StatsCard';
+import { ScanButton } from '../../../components/dashboard/ScanButton';
+import { QRScanner } from '../scanner/QRScanner';
+import { InvoiceCard } from '../../../components/invoice/InvoiceCard';
+import { CameraCapture } from '../proof/CameraCapture';
+import { ImageValidator } from '../proof/ImageValidator';
+import { Spinner } from '../../../components/common/Spinner';
+import { ErrorBanner } from '../../../components/common/ErrorBanner';
+import { ConfirmModal } from '../../../components/common/ConfirmModal';
 
 const STEPS = ['Login', 'Dashboard', 'Scan QR', 'Invoice', 'Proof', 'Done'];
 
@@ -34,7 +34,7 @@ export default function DeliveryPage() {
     loading, setLoading,
     error, setError,
     resetSession,
-  } = useDeliveryStore();
+  } = useDeliveryWorkflowStore();
 
   const { capture: captureGPS } = useGeolocation();
   const { getInfo } = useDeviceInfo();
@@ -42,6 +42,7 @@ export default function DeliveryPage() {
   const [confirmLogout, setConfirmLogout] = useState(false);
   const [posting, setPosting] = useState(false);
   const [postSuccess, setPostSuccess] = useState(false);
+console.log("isAuthenticated :",isAuthenticated);
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -50,7 +51,7 @@ export default function DeliveryPage() {
 
   // Load daily stats when dashboard is visible
   useEffect(() => {
-    if (step === 1 && isAuthenticated) {
+    if (isAuthenticated) {
       deliveryService.getDailyStats()
         .then(setStats)
         .catch(() => {});

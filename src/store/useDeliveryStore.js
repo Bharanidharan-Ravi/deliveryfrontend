@@ -1,51 +1,64 @@
-import { create } from 'zustand';
+// import { create } from 'zustand';
 
-export const useDeliveryStore = create((set) => ({
-  // Step: 0=Login, 1=Dashboard, 2=Scanner, 3=Invoice, 4=Proof, 5=Done
-  step: 0,
-  setStep: (step) => set({ step }),
+// export const useDeliveryStore = create((set) => ({
+//   // Delivery workflow only
+//   step: 'scan',
 
-  // QR Scan
-  scannedQR: null,
-  setScannedQR: (qr) => set({ scannedQR: qr }),
+//   setStep: (step) => set({ step }),
 
-  // Invoice data fetched from API
-  invoice: null,
-  setInvoice: (invoice) => set({ invoice }),
+//   // QR Scan
+//   scannedQR: null,
+//   setScannedQR: (qr) => set({ scannedQR: qr }),
 
-  // Proof image
-  proofImageFile: null,
-  proofImageUrl: null,
-  setProofImage: (file, url) => set({ proofImageFile: file, proofImageUrl: url }),
+//   // Invoice
+//   invoice: null,
+//   setInvoice: (invoice) => set({ invoice }),
 
-  // Daily stats
-  stats: { open: 0, closed: 0, total: 0 },
-  setStats: (stats) => set({ stats }),
+//   // Proof image
+//   proofImageFile: null,
+//   proofImageUrl: null,
 
-  // GPS coordinates
-  coordinates: null,
-  setCoordinates: (coords) => set({ coordinates: coords }),
+//   setProofImage: (file, url) =>
+//     set({
+//       proofImageFile: file,
+//       proofImageUrl: url,
+//     }),
 
-  // Uploaded image path (returned by server)
-  uploadedImagePath: null,
-  setUploadedImagePath: (path) => set({ uploadedImagePath: path }),
+//   // Stats
+//   stats: {
+//     open: 0,
+//     closed: 0,
+//     total: 0,
+//   },
 
-  // Loading / error state
-  loading: false,
-  setLoading: (loading) => set({ loading }),
-  error: null,
-  setError: (error) => set({ error }),
+//   setStats: (stats) => set({ stats }),
 
-  // Reset after delivery posted
-  resetSession: () =>
-    set({
-      step: 1,
-      scannedQR: null,
-      invoice: null,
-      proofImageFile: null,
-      proofImageUrl: null,
-      coordinates: null,
-      uploadedImagePath: null,
-      error: null,
-    }),
-}));
+//   // GPS
+//   coordinates: null,
+//   setCoordinates: (coords) => set({ coordinates: coords }),
+
+//   // Uploaded image path
+//   uploadedImagePath: null,
+//   setUploadedImagePath: (path) =>
+//     set({ uploadedImagePath: path }),
+
+//   // UI state
+//   loading: false,
+//   setLoading: (loading) => set({ loading }),
+
+//   error: null,
+//   setError: (error) => set({ error }),
+
+//   // Reset workflow
+//   resetSession: () =>
+//     set({
+//       step: 'scan',
+//       scannedQR: null,
+//       invoice: null,
+//       proofImageFile: null,
+//       proofImageUrl: null,
+//       coordinates: null,
+//       uploadedImagePath: null,
+//       error: null,
+//     }),
+// }));
