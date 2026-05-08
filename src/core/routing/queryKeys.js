@@ -13,5 +13,11 @@ export const queryKeys = {
       "invoice",
       qr,
     ],
+
+    document: (id) => [
+      ...queryKeys.delivery.all,
+      "document",
+      id,
+    ],
   },
 };

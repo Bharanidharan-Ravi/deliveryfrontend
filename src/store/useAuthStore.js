@@ -7,17 +7,20 @@ export const useAuthStore = create(
       token: null,
       user: null,
       isHydrated: false,
+      isAuthenticated: false,
 
       login: (token, user) =>
         set({
           token,
           user,
+          isAuthenticated: true,
         }),
 
       logout: () =>
         set({
           token: null,
           user: null,
+          isAuthenticated: false,
         }),
 
       setHydrated: (value) =>
