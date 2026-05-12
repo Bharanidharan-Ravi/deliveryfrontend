@@ -11,7 +11,6 @@ export function LoginForm() {
   const loginMutation = useLogin();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -71,7 +70,7 @@ export function LoginForm() {
               onChange={(e) => setUsername(e.target.value)}
               className="input"
               placeholder="Enter your username"
-              disabled={loading}
+              // disabled={loading}
               required
             />
           </div>
@@ -87,7 +86,7 @@ export function LoginForm() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="input pr-12"
                 placeholder="Enter your password"
-                disabled={loading}
+                // disabled={loading}
                 required
               />
               <button

@@ -5,26 +5,35 @@ export const deliveryService = {
    * Get today's delivery stats for the logged-in user
    * Returns { open, closed, total }
    */
- getDailyStats: async () => {
-    const { data } = await apiClient.get('/api/deliveries/stats/daily');
+  getDailyStats: async () => {
+    const { data } = await apiClient.get('/api/deliveries/stats/daily', { 
+      silent: true 
+    });
     return data;
   },
-  
-  getDocument: async ({docNum, docType}) => {
-    const { data } = await apiClient.get(`/api/deliveries/document?docNum=${docNum}&docType=${docType}`);
+
+  getDocument: async ({ docNum, docType }) => {
+    const { data } = await apiClient.get(
+      `/api/deliveries/document?docNum=${docNum}&docType=${docType}`,
+    );
     return data;
   },
   /**
    * Post a completed delivery record
    */
-  postDelivery: async ({ invoiceNumber, latitude, longitude, deviceId, imagePath }) => {
-    const { data } = await apiClient.post('/api/deliveries', {
-      invoiceNumber,
-      latitude,
-      longitude,
-      deviceId,
-      imagePath,
+  postDelivery: async (payload) => {
+    console.log("its trigger :", payload);
+
+    const { data } = await apiClient.post("/api/deliveries", {
+      ...payload,
       timestamp: new Date().toISOString(),
+    });
+    return data;
+  },
+
+  getHistory: async () => {
+    const { data } = await apiClient.get("/api/deliveries/history", { 
+      silent: true 
     });
     return data;
   },

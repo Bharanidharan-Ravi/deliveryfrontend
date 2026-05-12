@@ -19,5 +19,7 @@ export const queryKeys = {
       "document",
       id,
     ],
+
+    history: () => [...queryKeys.delivery.all, "history"],
   },
 };

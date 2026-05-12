@@ -17,7 +17,7 @@ export default defineConfig({
         description: 'Field delivery confirmation tool for delivery personnel',
         theme_color: '#0a0f1e',
         background_color: '#0a0f1e',
-        display: 'standalone',
+        display: 'standalone',  
         orientation: 'portrait',
         start_url: '/',
         scope: '/',

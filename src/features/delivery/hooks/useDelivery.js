@@ -9,7 +9,7 @@ import { useAuthStore } from "../../../store/useAuthStore";
 export function useDailyStatsQuery() {
   const { isAuthenticated } = useAuthStore();
   return useApiQuery({
-    queryKey: [...queryKeys.delivery.all, 'stats'],
+    queryKey: [...queryKeys.delivery.all, "stats"],
     queryFn: async () => {
       const data = await deliveryService.getDailyStats();
       return {
@@ -22,6 +22,7 @@ export function useDailyStatsQuery() {
       enabled: !!isAuthenticated,
       refetchInterval: 3 * 60 * 1000,
       refetchOnWindowFocus: false,
+      refetchIntervalInBackground: true,
       staleTime: 2 * 60 * 1000,
     },
   });
@@ -42,8 +43,27 @@ export function useDocumentQuery(value) {
 export function usePostDelivery(options = {}) {
   return useApiMutation({
     mutationFn: deliveryService.postDelivery,
-    // This is the magic! When a delivery succeeds, it forces the Stats query to refresh!
-    invalidateKeys: [queryKeys.delivery.all], 
+    // 🚀 React Query will automatically refresh these keys on success!
+    invalidateKeys: [
+      queryKeys.delivery.all,
+      // queryKeys.delivery.stats(), // Added the stats key here
+    ],
     ...options,
+  });
+}
+
+// 4. Get delivery history
+export function useDeliveryHistory(options = {}) {
+  const { isAuthenticated } = useAuthStore();
+   return useApiQuery({
+    queryKey: queryKeys.delivery.history(),
+    queryFn: () => deliveryService.getHistory(),
+    options: {
+      enabled: !!isAuthenticated,
+      refetchInterval: 3 * 60 * 1000,
+      refetchIntervalInBackground: true,
+      refetchOnWindowFocus: false,
+      staleTime: 2 * 60 * 1000,
+    },
   });
 }

@@ -1,23 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-@tailwind base;
+@tailwind  base;
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Design Tokens ────────────────────────────────────────────── */
-:root {
-  --color-bg:           #0a0f1e;
-  --color-surface:      #111827;
-  --color-surface-light:#1f2937;
-  --color-primary:      #6366f1;
-  --color-primary-dark: #4f46e5;
-  --color-primary-glow: rgba(99, 102, 241, 0.35);
-  --color-muted:        #6b7280;
-  --color-border:       rgba(255,255,255,0.08);
-}
-
-/* ─── Base ─────────────────────────────────────────────────────── */
 @layer base {
+  /* ☀️ LIGHT MODE (High Contrast for Outdoor Field Workers) */
+  :root {
+    --background: 241 245 249; /* Light Slate Background */
+    --card: 255 255 255;       /* Pure White Cards */
+    --foreground: 15 23 42;    /* Dark Navy Text */
+    --muted: 100 116 139;      /* Slate Gray Subtext */
+    --border: 0 0 0;           /* Black (used with opacity for borders) */
+    --primary: 99 102 241;     /* Primary Indigo */
+  }
+
+  /* 🌙 DARK MODE (Exact match to your gorgeous original design) */
+  .dark {
+    --background: 10 15 30;    /* Exact #0a0f1e */
+    --card: 17 24 39;          /* Exact #111827 */
+    --foreground: 249 250 251; /* Exact #f9fafb text */
+    --muted: 107 114 128;      /* Exact #6b7280 subtext */
+    --border: 255 255 255;     /* White (used with opacity for borders) */
+    --primary: 99 102 241;     /* Primary Indigo */
+  }
+
   *, *::before, *::after { box-sizing: border-box; }
 
   html, body, #root {
@@ -28,8 +35,9 @@
 
   body {
     font-family: 'Inter', system-ui, sans-serif;
-    background: var(--color-bg);
-    color: #f9fafb;
+    background-color: rgb(var(--background));
+    color: rgb(var(--foreground));
+    transition: background-color 0.3s ease, color 0.3s ease;
     -webkit-font-smoothing: antialiased;
     overscroll-behavior: none;
   }
@@ -38,11 +46,108 @@
     font-family: inherit;
   }
 }
-
 /* ─── Components ───────────────────────────────────────────────── */
 @layer components {
+  /* Card */
+  .card {
+    @apply rounded-2xl border p-5;
+    background-color: rgb(var(--card));
+    border-color: rgba(var(--border), 0.1);
+  }
 
-  /* Screen */
+  /* 🚀 FIXED Buttons: They will always have white text and correct backgrounds */
+  .btn-primary {
+    @apply flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-bold text-sm text-white transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95;
+    background-color: rgb(var(--primary));
+  }
+  .btn-primary:not(:disabled):hover {
+    box-shadow: 0 0 20px rgba(var(--primary), 0.4);
+  }
+
+  .btn-secondary {
+    @apply flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-bold text-sm transition-all duration-200 active:scale-95 border;
+    background-color: transparent;
+    border-color: rgba(var(--border), 0.2);
+    color: rgb(var(--foreground));
+  }
+  .btn-secondary:hover { 
+    background-color: rgba(var(--foreground), 0.05); 
+  }
+  .input {
+    @apply w-full rounded-xl px-4 py-3 text-sm text-white outline-none border transition-all duration-200;
+    background: var(--color-surface);
+    border-color: var(--color-border);
+  }
+  .input::placeholder { @apply text-muted/50; }
+  .input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-glow);
+  }
+  .input:disabled { @apply opacity-50 cursor-not-allowed; }
+}
+
+/* ─── Utilities & Animations ───────────────────────────────────── */
+@layer utilities {
+  .text-primary { color: rgb(var(--primary)); }
+  .bg-primary   { background-color: rgb(var(--primary)); }
+  .text-muted   { color: rgb(var(--muted)); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounce-in {
+  0%   { transform: scale(0.5); opacity: 0; }
+  60%  { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+.animate-fade-in    { animation: fade-in 0.25s ease both; }
+.animate-bounce-in  { animation: bounce-in 0.5s cubic-bezier(0.36,0.07,0.19,0.97) both; }
+
+/* ─── Scrollbar ────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(var(--muted), 0.3); border-radius: 4px; }
+
+
+/* :root {
+  --color-bg:           #0a0f1e;
+  --color-surface:      #111827;
+  --color-surface-light:#1f2937;
+  --color-primary:      #6366f1;
+  --color-primary-dark: #4f46e5;
+  --color-primary-glow: rgba(99, 102, 241, 0.35);
+  --color-muted:        #6b7280;
+  --color-border:       rgba(255,255,255,0.08);
+}
+@layer base {
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body, #root {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--color-bg);
+      color: #f9fafb;
+      -webkit-font-smoothing: antialiased;
+      overscroll-behavior: none;
+    }
+
+    input, button, select, textarea {
+      font-family: inherit;
+    }
+  } */
+/* ─── Components ───────────────────────────────────────────────── */
+/* @layer components {
+
+ // Screen
   .screen {
     @apply flex flex-col min-h-full max-w-md mx-auto;
     background: var(--color-bg);
@@ -60,7 +165,7 @@
     @apply flex-1 overflow-y-auto px-5 pb-8 pt-2;
   }
 
-  /* Step progress bar */
+  //Step progress bar
   .step-bar {
     @apply flex items-center gap-1.5 px-5 pb-4;
   }
@@ -73,14 +178,14 @@
   .step-done   { @apply bg-primary/50; }
   .step-idle   { @apply bg-white/10; }
 
-  /* Card */
+   Card
   .card {
     @apply rounded-2xl border p-5;
     background: var(--color-surface);
     border-color: var(--color-border);
   }
 
-  /* Buttons */
+  //Buttons
   .btn-primary {
     @apply flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-semibold text-sm text-white transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95;
     background: var(--color-primary);
@@ -107,7 +212,7 @@
     background: var(--color-surface-light);
   }
 
-  /* Icon buttons */
+  //Icon buttons
   .icon-btn {
     @apply w-9 h-9 rounded-xl flex items-center justify-center text-muted hover:text-white transition-colors;
     background: var(--color-surface-light);
@@ -120,7 +225,7 @@
   }
   .icon-btn-lg:hover { border-color: rgba(255,255,255,0.2); }
 
-  /* Inputs */
+  //Inputs
   .input-group { @apply flex flex-col gap-1.5; }
 
   .input-label { @apply text-xs font-medium text-muted uppercase tracking-wider; }
@@ -138,7 +243,6 @@
   .input:disabled { @apply opacity-50 cursor-not-allowed; }
 }
 
-/* ─── Utilities ────────────────────────────────────────────────── */
 @layer utilities {
   .text-primary { color: var(--color-primary); }
   .bg-primary   { background: var(--color-primary); }
@@ -156,7 +260,6 @@
   }
 }
 
-/* ─── Animations ───────────────────────────────────────────────── */
 @keyframes fade-in {
   from { opacity: 0; transform: translateY(4px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -184,13 +287,11 @@
 .animate-bounce-in  { animation: bounce-in 0.5s cubic-bezier(0.36,0.07,0.19,0.97) both; }
 .animate-scan-line  { animation: scan-line 2.5s ease-in-out infinite; }
 
-/* ─── Scrollbar ────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--color-surface-light); border-radius: 4px; }
 
-/* ─── html5-qrcode overrides ───────────────────────────────────── */
 #qr-reader { border: none !important; }
 #qr-reader video { border-radius: 0 !important; }
 #qr-reader__dashboard { display: none !important; }
-#qr-reader__status_span { display: none !important; }
+#qr-reader__status_span { display: none !important; } */

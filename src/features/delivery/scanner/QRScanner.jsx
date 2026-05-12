@@ -3,13 +3,14 @@ import { Html5Qrcode, Html5QrcodeSupportedFormats } from "html5-qrcode";
 import { useDeliveryWorkflowStore } from "../store/useDeliveryWorkflowStore";
 import { CameraControls } from "./CameraControls";
 import { BlurIndicator } from "./BlurIndicator";
+import { useTranslation } from "react-i18next";
 
 const SCANNER_ELEMENT_ID = "qr-reader";
 
 export function QRScanner({ onStop, setLogs, onScanSuccess }) {
   const setScannedQR = useDeliveryWorkflowStore((s) => s.setScannedQR);
   const setStep = useDeliveryWorkflowStore((s) => s.setStep);
-
+  const { t, i18n } = useTranslation();
   const scannerRef = useRef(null);
   const isTransitioningRef = useRef(false);
   const isSwitchingRef = useRef(false);
@@ -124,7 +125,13 @@ export function QRScanner({ onStop, setLogs, onScanSuccess }) {
         isCameraReadyRef.current = false;
 
         await stopScanner();
-        await new Promise((resolve) => setTimeout(resolve, 600));
+
+        // 🚀 FASTER BOOT: Removed the forced 600ms delay!
+        // We only wait 150ms IF the user is switching modes to give the hardware a moment to reset.
+        // If it is their first time opening the camera, it starts instantly (0ms delay).
+        if (isSwitchingRef.current) {
+          await new Promise((resolve) => setTimeout(resolve, 150));
+        }
 
         if (!mounted) return;
 
@@ -137,7 +144,6 @@ export function QRScanner({ onStop, setLogs, onScanSuccess }) {
 
         const isBarcode = scanModeRef.current === "barcode";
 
-        // DYNAMIC BOX UPDATE: Restored QR Box back to 260px since controls are on the sides now!
         const dynamicQrBox = (viewfinderWidth) => {
           if (isBarcode) {
             return { width: Math.min(viewfinderWidth * 0.95, 400), height: 60 };
@@ -170,6 +176,7 @@ export function QRScanner({ onStop, setLogs, onScanSuccess }) {
         setIsCameraReady(true);
         isCameraReadyRef.current = true;
 
+        // 🚀 FASTER ZOOM/AUTOFOCUS: Reduced from 300ms to 150ms
         setTimeout(async () => {
           const track = getVideoTrack();
           if (track) {
@@ -190,7 +197,7 @@ export function QRScanner({ onStop, setLogs, onScanSuccess }) {
               });
             } catch (e) {}
           }
-        }, 300);
+        }, 150);
       } catch (err) {
         if (mounted) {
           const errMsg =
@@ -214,7 +221,8 @@ export function QRScanner({ onStop, setLogs, onScanSuccess }) {
       try {
         if (!isSwitchingRef.current && mounted) setPermissionStatus("checking");
 
-        await new Promise((resolve) => setTimeout(resolve, 400));
+        // 🚀 FASTER PERMISSION CHECK: Reduced from 400ms to 50ms
+        await new Promise((resolve) => setTimeout(resolve, 50));
         const cameras = await Html5Qrcode.getCameras();
 
         if (cameras && cameras.length > 0) {
@@ -286,22 +294,25 @@ export function QRScanner({ onStop, setLogs, onScanSuccess }) {
     } catch (err) {}
   };
 
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="flex bg-card p-1 rounded-full mb-1 w-fit mx-auto border border-white/10 shadow-lg">
+return (
+    // 🚀 1. OUTER WRAPPER: Takes full height, allows children to shrink/grow
+    <div className="flex flex-col h-full flex-1 min-h-0 gap-3 w-full">
+      
+      {/* 🚀 2. TOGGLE BUTTONS: 'shrink-0' ensures they never get squished */}
+      <div className="relative z-10 shrink-0 flex w-full max-w-[280px] bg-card p-1 rounded-full mx-auto border border-white/10 shadow-lg">
         <button
           onClick={() => handleModeToggle("barcode")}
           disabled={isSwitching || permissionStatus !== "granted"}
-          className={`px-5 py-2 text-[11px] uppercase tracking-wider font-bold rounded-full transition-all duration-300 ${scanMode === "barcode" ? "bg-primary text-white shadow-md" : "text-muted hover:text-white"} ${isSwitching || permissionStatus !== "granted" ? "opacity-50 cursor-not-allowed" : ""}`}
+          className={`flex-1 py-2 px-1 text-[11px] flex items-center justify-center uppercase tracking-wider font-bold rounded-full transition-all duration-300 whitespace-nowrap ${scanMode === "barcode" ? "bg-primary text-white shadow-md" : "text-muted hover:text-white"} ${isSwitching || permissionStatus !== "granted" ? "opacity-50 cursor-not-allowed" : ""}`}
         >
-          Barcode
+          {t("toggle.barcode")}
         </button>
         <button
           onClick={() => handleModeToggle("qr")}
           disabled={isSwitching || permissionStatus !== "granted"}
-          className={`px-5 py-2 text-[11px] uppercase tracking-wider font-bold rounded-full transition-all duration-300 ${scanMode === "qr" ? "bg-primary text-white shadow-md" : "text-muted hover:text-white"} ${isSwitching || permissionStatus !== "granted" ? "opacity-50 cursor-not-allowed" : ""}`}
+          className={`flex-1 py-2 px-1 text-[11px] flex items-center justify-center uppercase tracking-wider font-bold rounded-full transition-all duration-300 whitespace-nowrap ${scanMode === "qr" ? "bg-primary text-white shadow-md" : "text-muted hover:text-white"} ${isSwitching || permissionStatus !== "granted" ? "opacity-50 cursor-not-allowed" : ""}`}
         >
-          QR Code
+          {t("toggle.qrcode")}
         </button>
       </div>
 
@@ -320,35 +331,39 @@ export function QRScanner({ onStop, setLogs, onScanSuccess }) {
         }
       `}</style>
 
-      <div className="relative w-full aspect-[4/3] max-w-sm mx-auto rounded-2xl overflow-hidden border border-white/10 bg-black shadow-xl">
-        {(!isCameraReady || permissionStatus === "checking" || isSwitching) && (
+      {/* 🚀 3. CAMERA CONTAINER: Replaced aspect-[4/3] with flex-1 min-h-[200px]. 
+          This makes it shrink perfectly on small phones! */}
+      <div className="relative w-full flex-1 min-h-[200px] max-h-[500px] max-w-sm mx-auto rounded-2xl overflow-hidden border border-white/10 bg-black shadow-xl">
+        
+        {(!isCameraReady || permissionStatus === "checking" || isSwitching) && permissionStatus !== "denied" && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-card/90 backdrop-blur-md z-20 transition-all duration-300">
             <div className="w-8 h-8 border-4 border-primary/30 border-t-primary rounded-full animate-spin mb-3"></div>
             <p className="text-sm text-muted animate-pulse">
-              {isSwitching ? "Switching mode..." : "Starting Lens..."}
+              {isSwitching ? t("camera.switching") : t("camera.starting")}
             </p>
           </div>
         )}
 
+        {/* Blocked State */}
         {permissionStatus === "denied" && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-card z-20 px-6 text-center">
             <span className="text-4xl mb-3">📷🚫</span>
-            <p className="text-red-400 font-bold mb-1">Camera Access Blocked</p>
+            <p className="text-red-400 font-bold mb-1">{t("camera.blockedTitle")}</p>
             <p className="text-xs text-muted">
-              Please allow camera permissions and refresh.
+              {t("camera.blockedMsg")}
             </p>
           </div>
         )}
 
-        <div id={SCANNER_ELEMENT_ID} className="w-full h-full object-cover" />
+        <div id={SCANNER_ELEMENT_ID} className="absolute inset-0 w-full h-full object-cover" />
 
         {isCameraReady && permissionStatus === "granted" && !isSwitching && (
           <div className="absolute inset-0 pointer-events-none z-10 transition-all duration-500">
             <div
               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ease-out"
               style={{
-                width: scanMode === "barcode" ? "min(95%, 400px)" : "260px",
-                height: scanMode === "barcode" ? "60px" : "260px",
+                width: scanMode === "barcode" ? "min(95%, 400px)" : "min(80%, 260px)",
+                height: scanMode === "barcode" ? "60px" : "min(80%, 260px)",
               }}
             >
               <div className="absolute top-0 left-0 w-6 h-6 border-t-[3px] border-l-[3px] border-primary rounded-tl-lg" />
@@ -375,7 +390,6 @@ export function QRScanner({ onStop, setLogs, onScanSuccess }) {
           permissionStatus === "granted" &&
           !isSwitching &&
           (scanMode === "barcode" ? (
-            // Barcode Bottom Layout
             <div className="absolute bottom-0 inset-x-0 pt-16 pb-4 px-4 bg-gradient-to-t from-black/90 via-black/60 to-transparent z-40">
               <CameraControls
                 layout="bottom"
@@ -388,7 +402,6 @@ export function QRScanner({ onStop, setLogs, onScanSuccess }) {
               />
             </div>
           ) : (
-            // QR Sides Layout
             <div className="absolute inset-0 pointer-events-none z-40">
               <CameraControls
                 layout="sides"
@@ -404,24 +417,29 @@ export function QRScanner({ onStop, setLogs, onScanSuccess }) {
       </div>
 
       {scanError && (
-        <p className="text-xs text-red-400 text-center px-4">{scanError}</p>
+        <p className="shrink-0 text-xs text-red-400 text-center px-4">{scanError}</p>
       )}
 
-      <button
-        className="w-full rounded-2xl border border-red-500/20 bg-red-500/10 py-3 text-red-400 font-medium transition-colors active:bg-red-500/20 mt-1 disabled:opacity-50"
-        disabled={isSwitching}
-        onClick={async () => {
-          await stopScanner();
-          onStop?.();
-        }}
-      >
-        Stop Scan
-      </button>
+      {/* 🚀 4. BOTTOM CONTROLS: 'shrink-0' protects them from the flexbox */}
+      <div className="shrink-0 flex flex-col gap-2 w-full mt-auto">
+        <button
+          className="w-full rounded-2xl border border-red-500/20 bg-red-500/10 py-3 text-red-400 font-medium transition-colors active:bg-red-500/20 disabled:opacity-50"
+          disabled={isSwitching}
+          onClick={async () => {
+            await stopScanner();
+            onStop?.();
+          }}
+        >
+          {t("scanner.stopScan")}
+        </button>
 
-      <p className="text-[11px] text-muted text-center pb-2">
-        Align {scanMode === "barcode" ? "barcode" : "QR code"} strictly within
-        the target area
-      </p>
+        <p className="text-[11px] text-muted text-center pb-2">
+          {scanMode === "barcode" 
+            ? t("scanner.alignBarcode", "Keep the barcode inside the box") 
+            : t("scanner.alignQR", "Keep the QR code inside the box")
+          }
+        </p>
+      </div>
     </div>
   );
 }

@@ -16,7 +16,7 @@ export function useLogin() {
     onSuccess: ({ token, user }) => {
       login(token, user);
 
-     navigate(PATHS.DELIVERY);
+     navigate(PATHS.DELIVERY, { replace: true });
     },
   });
 }

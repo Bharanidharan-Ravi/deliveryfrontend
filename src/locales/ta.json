@@ -1,0 +1,101 @@
+{
+  "translation": {
+    "header": {
+      "title": "டெலிவரி ஆப்",
+      "subtitle": "பார்சல் டெலிவரி"
+    },
+    "scanner": {
+      "title": "பில் ஸ்கேன்",
+      "subtitle": "QR அல்லது பார்கோடு ஸ்கேன் செய்யவும்",
+      "stopScan": "ஸ்கேன் நிறுத்து",
+      "manualEntry": "பில் நம்பரை டைப் செய்",
+      "readyToScan": "ஸ்கேன் செய்ய தயார்",
+      "openCameraMsg": "பில்லை ஸ்கேன் செய்ய கேமராவை திறக்கவும்",
+      "startScan": "ஸ்கேன் செய்",
+      "alignBarcode": "பார்கோடை கட்டத்திற்குள் சரியாக காட்டவும்",
+      "alignQR": "QR கோடை கட்டத்திற்குள் சரியாக காட்டவும்"
+    },
+    "manualEntry": {
+      "title": "கையேடு உள்ளீடு",
+      "manualEntrySubtitle": "பில் நம்பரை இங்கே டைப் செய்யவும்",
+      "back": "Back",
+      "docType": "பில் வகை (Doc Type)",
+      "invoice": "இன்வாய்ஸ் (Invoice)",
+      "delivery": "டெலிவரி (Delivery)",
+      "docNumber": "பில் நம்பர் (Bill Number)",
+      "placeholder": "உதாரணம்: 26009707",
+      "verifyBtn": "பில்லை சரிபார்"
+    },
+    "summary": {
+      "title": "இன்றைய கணக்கு",
+      "open": "நிலுவை",
+      "closed": "முடிந்தது",
+      "total": "மொத்தம்"
+    },
+    "dropdown": {
+      "language": "மொழி (Language)",
+      "signOut": "வெளியேறு"
+    },
+    "camera": {
+      "blockedTitle": "கேமரா ஆன் ஆகவில்லை",
+      "blockedMsg": "கேமராவுக்கு அனுமதி கொடுத்துவிட்டு ரெஃப்ரெஷ் (Refresh) செய்யவும்.",
+      "starting": "கேமரா ஓபன் ஆகிறது...",
+      "switching": "மாற்றப்படுகிறது..."
+    },
+    "errors": {
+     "alreadyPosted": "பில் {{docNum}} ஏற்கனவே டெலிவரி செய்யப்பட்டுவிட்டது.",
+      "invalidBarcode": "தவறான பார்கோடு. சரியான பில்லை ஸ்கேன் செய்யவும்.",
+      "documentRejected": "ஏற்றுக்கொள்ளப்படவில்லை",
+      "scanDifferent": "வேறொரு பில்லை ஸ்கேன் செய்",
+      "scanDifferentSuffix": "தயவுசெய்து வேறொரு பில்லை முயற்சிக்கவும்."
+    },
+    "toggle": {
+      "barcode": "பார்கோடு",
+      "qrcode": "QR கோடு"
+    },
+    "nav": {
+      "delivery": "டெலிவரி",
+      "history": "பழைய கணக்கு"
+    },
+    "proof": {
+      "capture": "டெலிவரி போட்டோ",
+      "cancel": "ரத்து செய்",
+      "confirmImage": "போட்டோவை உறுதி செய்",
+      "retake": "திரும்ப எடு",
+      "looksGood": "உறுதி செய்"
+    },
+    "verify": {
+      "title": "பில்லை சரிபார்",
+      "subtitle": "விவரங்களை சரிபார்த்து போட்டோ எடுக்கவும்",
+      "rescan": "திரும்ப ஸ்கேன் செய்",
+      "customer": "கஸ்டமர் (CUSTOMER)",
+      "docType": "பில் வகை",
+      "invoice": "இன்வாய்ஸ்",
+      "docNumber": "பில் நம்பர்",
+      "quantity": "அளவு (QTY)",
+      "units": "பொருட்கள்",
+      "outstanding": "பேலன்ஸ் தொகை",
+      "vehicleNumber": "வண்டி நம்பர்",
+      "remarks": "குறிப்புகள் (Optional)",
+      "remarksPlaceholder": "டெலிவரி பற்றிய குறிப்புகள்...",
+      "deliveryProof": "டெலிவரி போட்டோ (Proof)",
+      "postDelivery": "டெலிவரியை உறுதி செய்"
+    },
+    "success": {
+      "title": "உறுதி செய்யப்பட்டது!",
+      "docPrefix": "பில்",
+      "docSuffix": "வெற்றிகரமாக அப்டேட் செய்யப்பட்டது.",
+      "nextBtn": "அடுத்த டெலிவரி"
+    },
+    "history": {
+      "title": "பழைய பில்கள்",
+      "subtitle": "சமீபத்திய டெலிவரிகள்",
+      "billNo": "பில் நம்பர்",
+      "vehicle": "வண்டி",
+      "statusSuccess": "வெற்றி",
+      "noData": "டெலிவரி எதுவும் இல்லை.",
+      "today": "இன்று"
+    },
+    "themeToggle": "டார்க் மோடு (Dark Mode)"
+  }
+}

@@ -8,8 +8,10 @@
 //   return useApiMutation({
 //     mutationFn: deliveryService.postDelivery,
 
+//     // 🚀 React Query will automatically refresh these keys on success!
 //     invalidateKeys: [
 //       queryKeys.delivery.all,
+//       queryKeys.delivery.stats(), // Added the stats key here
 //     ],
 
 //     ...options,

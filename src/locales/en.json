@@ -1,0 +1,101 @@
+{
+  "translation": {
+    "header": {
+      "title": "Delivery App",
+      "subtitle": "Clarion Field Delivery"
+    },
+    "scanner": {
+      "title": "Scan Bill",
+      "subtitle": "Scan QR or barcode",
+      "stopScan": "Stop Scan",
+      "manualEntry": "Manual Entry",
+      "readyToScan": "Ready to Scan",
+      "openCameraMsg": "Open camera to scan bill",
+      "startScan": "Start Scan",
+      "alignBarcode": "Keep the barcode inside the box",
+      "alignQR": "Keep the QR code inside the box"
+    },
+    "manualEntry": {
+      "title": "Manual Entry",
+      "manualEntrySubtitle": "Type the bill number manually",
+      "back": "Back",
+      "docType": "DOCUMENT TYPE",
+      "invoice": "Invoice",
+      "delivery": "Delivery",
+      "docNumber": "DOCUMENT NUMBER",
+      "placeholder": "e.g. 26009707",
+      "verifyBtn": "Verify Document"
+    },
+    "summary": {
+      "title": "Today's Account",
+      "open": "Pending",
+      "closed": "Completed",
+      "total": "Total"
+    },
+    "dropdown": {
+      "language": "Language Preference",
+      "signOut": "Sign Out"
+    },
+    "camera": {
+      "blockedTitle": "Camera Access Blocked",
+      "blockedMsg": "Please allow camera access and refresh the page.",
+      "starting": "Opening Camera...",
+      "switching": "Switching..."
+    },
+    "errors": {
+      "alreadyPosted": "Bill {{docNum}} has already been delivered.",
+      "invalidBarcode": "Invalid Barcode. Please scan a valid bill.",
+      "documentRejected": "Bill Rejected",
+      "scanDifferent": "Scan Different Bill",
+      "scanDifferentSuffix": "Please scan a different bill."
+    },
+    "toggle": {
+      "barcode": "BARCODE",
+      "qrcode": "QR CODE"
+    },
+    "nav": {
+      "delivery": "Delivery",
+      "history": "History"
+    },
+    "proof": {
+      "capture": "Capture Proof",
+      "cancel": "Cancel",
+      "confirmImage": "Confirm Image",
+      "retake": "Retake",
+      "looksGood": "Looks Good"
+    },
+    "verify": {
+      "title": "Verify Document",
+      "subtitle": "Confirm details & capture proof",
+      "rescan": "Rescan",
+      "customer": "CUSTOMER",
+      "docType": "DOC TYPE",
+      "invoice": "Invoice",
+      "docNumber": "DOC NUMBER",
+      "quantity": "QUANTITY",
+      "units": "Units",
+      "outstanding": "OUTSTANDING",
+      "vehicleNumber": "VEHICLE NUMBER",
+      "remarks": "REMARKS (OPTIONAL)",
+      "remarksPlaceholder": "Any delivery notes...",
+      "deliveryProof": "DELIVERY PROOF",
+      "postDelivery": "Post Final Delivery"
+    },
+    "success": {
+      "title": "Confirmed!",
+      "docPrefix": "Document",
+      "docSuffix": "has been securely posted.",
+      "nextBtn": "Next Delivery"
+    },
+    "history": {
+      "title": "Delivery History",
+      "subtitle": "Your recent postings",
+      "billNo": "Bill No",
+      "vehicle": "Vehicle",
+      "statusSuccess": "Success",
+      "noData": "No deliveries found.",
+      "today": "Today"
+    },
+    "themeToggle": "Dark Mode"
+  }
+}

@@ -1,7 +1,9 @@
 import { NavLink } from "react-router-dom";
 import { PATHS } from "../../core/routing/paths";
+import { useTranslation } from "react-i18next";
 
 export default function AppFooterNav() {
+  const { t } = useTranslation(); 
   return (
     // REMOVED 'fixed bottom-0'. AppLayout manages the position now!
     <footer className="border-t border-white/5 w-full">
@@ -17,7 +19,7 @@ export default function AppFooterNav() {
           }
         >
           <span className="text-xl">🚚</span>
-          <span>Delivery</span>
+          <span>{t("nav.delivery")}</span>
         </NavLink>
 
         {/* History */}
@@ -30,7 +32,7 @@ export default function AppFooterNav() {
           }
         >
           <span className="text-xl">📜</span>
-          <span>History</span>
+          <span>{t("nav.history")}</span>
         </NavLink>
 
       </div>

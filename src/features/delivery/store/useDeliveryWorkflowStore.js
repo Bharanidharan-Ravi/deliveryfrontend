@@ -11,7 +11,7 @@ export const useDeliveryWorkflowStore = create((set) => ({
 
   comment: "",
 
-  loading: false,
+  // loading: false,
 
     // QR Scan
   scannedQR: null,
@@ -38,19 +38,19 @@ export const useDeliveryWorkflowStore = create((set) => ({
   setComment: (comment) =>
     set({ comment }),
 
-  setLoading: (loading) =>
-    set({ loading }),
+  // setLoading: (loading) =>
+  //   set({ loading }),
 
   setError: (error) =>
     set({ error }),
 
-  resetWorkflow: () =>
+  resetSession: () =>
     set({
       step: 1,
       scannedValue: "",
       invoiceData: null,
       comment: "",
-      loading: false,
+      // loading: false,
       error: null,
     }),
 }));
