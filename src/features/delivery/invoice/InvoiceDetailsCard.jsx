@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { uploadService } from "../services/uploadService";
-import { Spinner } from "../../../components/common/Spinner";
 import { useTranslation } from "react-i18next";
 
 export default function InvoiceDetailsCard({ invoice, onConfirm }) {
@@ -410,7 +409,6 @@ export default function InvoiceDetailsCard({ invoice, onConfirm }) {
 
 // import { useState, useEffect, useRef } from "react";
 // import { uploadService } from "../services/uploadService";
-// import { Spinner } from "../../../components/common/Spinner";
 // import { useTranslation } from "react-i18next";
 
 // export default function InvoiceDetailsCard({ invoice, onConfirm }) {
@@ -789,7 +787,6 @@ export default function InvoiceDetailsCard({ invoice, onConfirm }) {
 //           />
 //           {/* {isUploading ? (
 //             <div className="py-4">
-//               <Spinner label="Saving Image..." />
 //             </div>
 //           ) : ( */}
 //             <div className="flex gap-4 w-full max-w-xs">

@@ -2,6 +2,7 @@ import AppHeader from "./components/AppHeader";
 import AppFooterNav from "./components/AppFooterNav";
 import { useUIStore } from "../store/useUIStore";
 import { ErrorBanner } from "../components/common/ErrorBanner";
+import { Spinner } from "../components";
 
 export default function AppLayout({ children }) {
   const { isLoading, globalError, clearError } = useUIStore();
@@ -26,10 +27,9 @@ export default function AppLayout({ children }) {
       <main className="flex-1 w-full max-w-md mx-auto px-4 py-3 flex flex-col min-h-0 overflow-y-auto relative">
         
         {/* Global Loading Overlay */}
-        {isLoading && (
-          <div className="absolute inset-0 z-50 bg-black/40 backdrop-blur-sm flex flex-col items-center justify-center rounded-xl animate-fade-in">
-            <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin shadow-[0_0_15px_var(--primary)] mb-3"></div>
-            <p className="text-xs font-bold tracking-widest text-primary uppercase">Processing...</p>
+       {isLoading && (
+          <div className="absolute inset-0 z-50 bg-background/60 backdrop-blur-sm flex flex-col items-center justify-center rounded-2xl animate-fade-in">
+            <Spinner size="lg" label="PROCESSING..." />
           </div>
         )}
 
@@ -41,7 +41,7 @@ export default function AppLayout({ children }) {
       <div className="shrink-0 w-full z-40 bg-card/95 backdrop-blur-md">
         <AppFooterNav />
         
-        <div className="pt-1.5 pb-4 flex items-center justify-center gap-1.5 border-t border-white/5 bg-black/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]">
+        {/* <div className="pt-1.5 pb-4 flex items-center justify-center gap-1.5 border-t border-white/5 bg-black/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]">
           <div className="relative flex h-1.5 w-1.5 items-center justify-center">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-60"></span>
             <span className="relative inline-flex rounded-full h-1 w-1 bg-primary shadow-[0_0_8px_var(--primary)]"></span>
@@ -51,7 +51,7 @@ export default function AppLayout({ children }) {
             <span className="font-black text-gray-200 tracking-widest ml-1.5 uppercase">WORKGLOW</span>
             <span className="font-medium text-muted/60 ml-1 capitalize">Solutions</span>
           </div>
-        </div>
+        </div> */}
       </div>
 
     </div>

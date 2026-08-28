@@ -4,7 +4,7 @@ import AuthGuard from "../auth/AuthGuard";
 
 import { PATHS } from "./paths";
 
-import { LoginForm } from "../../features/auth/pages/LoginForm";
+import LoginForm from "../../features/auth/pages/LoginForm";
 import DashboardPage from "../../features/dashboard/pages/DashboardPage";
 import DeliveryPage from "../../features/delivery/pages/DeliveryPage";
 import AppLayout from "../../layout/AppLayout";

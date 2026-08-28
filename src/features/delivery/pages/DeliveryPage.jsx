@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom"; 
+import { useSearchParams } from "react-router-dom";
 import { useAuthStore } from "../../../store/useAuthStore";
 import { useDeliveryWorkflowStore } from "../store/useDeliveryWorkflowStore";
 import { uploadService } from "../../../services/uploadService";
@@ -67,9 +67,9 @@ export default function DeliveryPage() {
       const parts = urlDoc.split("-");
       if (parts.length >= 2) {
         setScannedQR(urlDoc);
-        verifyDocument(parts[0].trim(), parseInt(parts[1].trim(), 10), urlStep); 
+        verifyDocument(parts[0].trim(), parseInt(parts[1].trim(), 10), urlStep);
       } else {
-        navigateToStep(1); 
+        navigateToStep(1);
       }
       return;
     }
@@ -80,7 +80,12 @@ export default function DeliveryPage() {
   // ==========================================
   // API GATEKEEPER
   // ==========================================
-  const verifyDocument = async (docNum, docType, targetStep = 3, isManual = false) => {
+  const verifyDocument = async (
+    docNum,
+    docType,
+    targetStep = 3,
+    isManual = false,
+  ) => {
     try {
       clearError();
       const data = await deliveryService.getDocument({ docNum, docType });
@@ -88,18 +93,18 @@ export default function DeliveryPage() {
         setInvoiceData(data);
         const combinedDocString = `${docNum}-${docType}`;
         setScannedQR(combinedDocString);
-        navigateToStep(targetStep, combinedDocString); 
+        navigateToStep(targetStep, combinedDocString);
       }
     } catch (err) {
       const backendMessage = err.response?.data?.message || err.message || "";
       if (backendMessage.includes("already been posted")) {
         setError(t("errors.alreadyPosted", { docNum: docNum }));
       } else if (backendMessage.includes("Document not found")) {
-        setError(t("errors.invalidBarcode")); 
+        setError(t("errors.invalidBarcode"));
       } else {
-        setError(t("errors.documentRejected")); 
+        setError(t("errors.documentRejected"));
       }
-      if (!isManual) navigateToStep(1); 
+      if (!isManual) navigateToStep(1);
     }
   };
 
@@ -119,9 +124,15 @@ export default function DeliveryPage() {
   const handleConfirmDelivery = async (details) => {
     try {
       let coords = null;
-      try { coords = await captureGPS(); } catch (e) { console.warn(e); }
+      try {
+        coords = await captureGPS();
+      } catch (e) {
+        console.warn(e);
+      }
 
-      const imageFileNames = details.images.map((img) => img.fileName || img.FileName);
+      const imageFileNames = details.images.map(
+        (img) => img.fileName || img.FileName,
+      );
       const deviceInfo = getInfo();
 
       await submitDelivery({
@@ -142,13 +153,20 @@ export default function DeliveryPage() {
     }
   };
 
+  const handleResetSession = () => {
+    resetSession();
+    navigateToStep(1);
+  };
+
   const Progress = () => (
     <div className="flex gap-2 mb-2">
       {[1, 2, 3, 4, 5].map((s) => (
         <div
           key={s}
-          className={`h-1.5 flex-1 rounded-full transition-all duration-500 ease-out ${
-            s <= step ? "bg-primary shadow-[0_0_8px_rgba(99,102,241,0.5)]" : "bg-foreground/10"
+          className={`h-1 flex-1 rounded-full transition-all duration-500 ease-out ${
+            s <= step
+              ? "bg-primary shadow-[0_0_8px_rgba(99,102,241,0.5)]"
+              : "bg-foreground/10"
           }`}
         />
       ))}
@@ -161,43 +179,46 @@ export default function DeliveryPage() {
   if (step === 1) {
     return (
       <div className="flex flex-col h-full flex-1 relative animate-fade-in">
-        <div className="shrink-0 space-y-3 mb-4">
+        <div className="shrink-0 space-y-2 mb-3">
           <div>
-            <h2 className="text-2xl font-black tracking-tight text-foreground leading-tight">
+            {/* 🚀 CHANGED: Stepped down to font-bold for perfect Tamil legibility */}
+            <h2 className="text-2xl font-bold tracking-tight text-foreground leading-tight">
               {t("scanner.title")}
             </h2>
-            <p className="text-[12px] font-medium text-muted mt-0.5">{t("scanner.subtitle")}</p>
+            <p className="text-[11px] font-medium text-muted">
+              {t("scanner.subtitle")}
+            </p>
           </div>
-          
+
           <Progress />
-          
+
           <div className="pt-1">
-            <p className="text-[10px] text-muted uppercase tracking-widest mb-2 font-bold">
+            <p className="text-[10px] text-muted uppercase tracking-widest mb-1.5 font-bold">
               {t("summary.title")}
             </p>
             <div className="grid grid-cols-3 gap-3">
-              <div className="rounded-2xl border border-amber-500/20 bg-amber-500/10 py-2.5 text-center shadow-sm">
-                <div className="text-xl font-black text-amber-600 dark:text-amber-400">
+              <div className="rounded-2xl border border-sky-500/30 bg-card py-2 text-center shadow-sm">
+                <div className="text-lg font-bold text-sky-500">
+                  {displayStats?.total}
+                </div>
+                <div className="text-[9px] font-medium text-muted mt-0.5">
+                  {t("summary.total")}
+                </div>
+              </div>
+              <div className="rounded-2xl border border-amber-500/30 bg-card py-2 text-center shadow-sm">
+                <div className="text-lg font-bold text-amber-500">
                   {displayStats?.open}
                 </div>
-                <div className="text-[10px] font-semibold text-amber-700/80 dark:text-amber-400/80 mt-0.5">
+                <div className="text-[9px] font-medium text-muted mt-0.5">
                   {t("summary.open")}
                 </div>
               </div>
-              <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 py-2.5 text-center shadow-sm">
-                <div className="text-xl font-black text-emerald-600 dark:text-emerald-400">
+              <div className="rounded-2xl border border-emerald-500/30 bg-card py-2 text-center shadow-sm">
+                <div className="text-lg font-bold text-emerald-500">
                   {displayStats?.closed}
                 </div>
-                <div className="text-[10px] font-semibold text-emerald-700/80 dark:text-emerald-400/80 mt-0.5">
+                <div className="text-[9px] font-medium text-muted mt-0.5">
                   {t("summary.closed")}
-                </div>
-              </div>
-              <div className="rounded-2xl border border-sky-500/20 bg-sky-500/10 py-2.5 text-center shadow-sm">
-                <div className="text-xl font-black text-sky-600 dark:text-sky-400">
-                  {displayStats?.total}
-                </div>
-                <div className="text-[10px] font-semibold text-sky-700/80 dark:text-sky-400/80 mt-0.5">
-                  {t("summary.total")}
                 </div>
               </div>
             </div>
@@ -207,35 +228,38 @@ export default function DeliveryPage() {
         <div className="flex-1 flex flex-col justify-center min-h-0 relative">
           {globalError ? (
             <div className="w-full max-w-sm mx-auto bg-card border border-red-500/30 rounded-3xl p-8 flex flex-col items-center justify-center text-center shadow-xl animate-bounce-in">
-              <div className="w-16 h-16 bg-red-500/10 text-red-600 dark:text-red-400 rounded-full flex items-center justify-center mb-5 text-3xl shadow-[0_0_20px_rgba(239,68,68,0.15)]">
+              <div className="w-16 h-16 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center mb-5 text-3xl shadow-[0_0_20px_rgba(239,68,68,0.15)]">
                 ⚠️
               </div>
-              <h3 className="text-foreground font-black text-xl mb-2">
+              <h3 className="text-foreground font-bold text-lg mb-2">
                 {t("errors.documentRejected")}
               </h3>
               <p className="text-muted text-sm mb-8 font-medium px-2">
                 {globalError || t("errors.scanDifferentSuffix")}
               </p>
               <button
-                onClick={() => { clearError(); setScannerOpen(true); }}
-                className="btn-primary w-full py-3.5"
+                onClick={() => {
+                  clearError();
+                  setScannerOpen(true);
+                }}
+                className="btn-primary w-full py-3"
               >
                 {t("errors.scanDifferent")}
               </button>
             </div>
           ) : !scannerOpen ? (
-            <div className="w-full max-w-sm mx-auto flex-1 max-h-[240px] rounded-3xl border border-border/10 bg-card flex flex-col items-center justify-center text-center px-6 shadow-md transition-all">
-              <div className="w-14 h-14 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center mb-4 text-2xl shadow-inner text-primary">
+            <div className="w-full max-w-sm mx-auto flex-1 max-h-[200px] rounded-3xl border border-border/10 bg-card flex flex-col items-center justify-center text-center px-6 shadow-md transition-all">
+              <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center mb-3 text-xl shadow-inner text-primary">
                 📷
               </div>
-              <h3 className="text-base font-bold text-foreground mb-1.5">
+              <h3 className="text-sm font-bold text-foreground mb-1">
                 {t("scanner.readyToScan")}
               </h3>
-              <p className="text-xs font-medium text-muted mb-6">
+              <p className="text-[11px] font-medium text-muted mb-4">
                 {t("scanner.openCameraMsg")}
               </p>
               <button
-                className="btn-primary w-full max-w-[220px] py-3 shadow-lg shadow-primary/20"
+                className="btn-primary w-full max-w-[200px] py-2.5 text-sm shadow-lg shadow-primary/20"
                 onClick={() => setScannerOpen(true)}
               >
                 {t("scanner.startScan")}
@@ -252,9 +276,9 @@ export default function DeliveryPage() {
           )}
         </div>
 
-        <div className="shrink-0 mt-4 pt-2 pb-8">
+        <div className="shrink-0 mt-3 pt-1 pb-10">
           <button
-            className="w-full bg-card border border-border/20 text-foreground hover:bg-foreground/5 transition-colors rounded-2xl py-3.5 font-bold text-sm shadow-sm active:scale-[0.98]"
+            className="w-full bg-transparent border border-primary/30 text-primary hover:bg-primary/10 transition-colors rounded-2xl py-3 font-medium text-sm active:scale-[0.98]"
             onClick={() => navigateToStep(2)}
           >
             {t("scanner.manualEntry")}
@@ -272,7 +296,8 @@ export default function DeliveryPage() {
       <div className="space-y-4 flex flex-col h-full pb-10 animate-fade-in">
         <div className="flex items-center justify-between shrink-0">
           <div>
-            <h2 className="text-2xl font-black tracking-tight text-foreground leading-tight">
+            {/* 🚀 CHANGED: Stepped down to font-bold */}
+            <h2 className="text-2xl font-bold tracking-tight text-foreground leading-tight">
               {t("manualEntry.title")}
             </h2>
             <p className="text-[12px] font-medium text-muted mt-0.5">
@@ -280,13 +305,18 @@ export default function DeliveryPage() {
             </p>
           </div>
           <button
-            onClick={() => { clearError(); navigateToStep(1); }}
+            onClick={() => {
+              clearError();
+              navigateToStep(1);
+            }}
             className="text-sm text-primary font-bold px-3.5 py-1.5 bg-primary/10 hover:bg-primary/20 transition-colors rounded-lg"
           >
             ← {t("manualEntry.back")}
           </button>
         </div>
-        <div className="shrink-0"><Progress /></div>
+        <div className="shrink-0">
+          <Progress />
+        </div>
         <div className="flex-1 overflow-y-auto mt-2">
           <ManualEntryForm onSubmit={handleManualSubmit} />
         </div>
@@ -303,10 +333,13 @@ export default function DeliveryPage() {
         <div className="shrink-0 space-y-3 mb-2">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-xl font-black tracking-tight text-foreground leading-tight">
+              {/* 🚀 CHANGED: Stepped down to font-bold */}
+              <h2 className="text-xl font-bold tracking-tight text-foreground leading-tight">
                 {t("verify.title")}
               </h2>
-              <p className="text-[11px] font-medium text-muted mt-0.5">{t("verify.subtitle")}</p>
+              <p className="text-[11px] font-medium text-muted mt-0.5">
+                {t("verify.subtitle")}
+              </p>
             </div>
             <button
               onClick={() => navigateToStep(1)}
@@ -319,7 +352,10 @@ export default function DeliveryPage() {
         </div>
         <div className="flex-1 flex flex-col min-h-0 relative mt-2">
           {invoiceData ? (
-            <InvoiceDetailsCard invoice={invoiceData} onConfirm={handleConfirmDelivery} />
+            <InvoiceDetailsCard
+              invoice={invoiceData}
+              onConfirm={handleConfirmDelivery}
+            />
           ) : null}
         </div>
       </div>
@@ -335,7 +371,8 @@ export default function DeliveryPage() {
         <div className="w-28 h-28 rounded-full bg-emerald-500/10 border-[6px] border-emerald-500 flex items-center justify-center shadow-[0_0_40px_rgba(16,185,129,0.2)] mb-8">
           <span className="text-6xl text-emerald-500">✓</span>
         </div>
-        <h2 className="text-3xl font-black text-foreground mb-3 tracking-tight">
+        {/* 🚀 CHANGED: Stepped down to font-bold */}
+        <h2 className="text-3xl font-bold text-foreground mb-3 tracking-tight">
           {t("success.title")}
         </h2>
         <p className="text-muted text-base mb-10 max-w-[260px] font-medium leading-relaxed">
@@ -358,9 +395,6 @@ export default function DeliveryPage() {
   return null;
 }
 
-
-
-
 // import { useState, useEffect } from "react";
 // import { useSearchParams } from "react-router-dom"; // IMPORTED ROUTER HOOK
 // import { useAuthStore } from "../../../store/useAuthStore";
@@ -372,7 +406,6 @@ export default function DeliveryPage() {
 // import ManualEntryForm from "../manualentry/ManualEntryForm";
 // import { CameraCapture } from "../proof/CameraCapture";
 // import { ImageValidator } from "../proof/ImageValidator";
-// import { Spinner } from "../../../components/common/Spinner";
 // import { ErrorBanner } from "../../../components/common/ErrorBanner";
 // import InvoiceDetailsCard from "../invoice/InvoiceDetailsCard";
 // import { useDailyStatsQuery, usePostDelivery } from "../hooks/useDelivery";
@@ -471,16 +504,16 @@ export default function DeliveryPage() {
 //     try {
 //       // Clear any old errors first
 //       clearError();
-      
+
 //       const data = await deliveryService.getDocument({ docNum, docType });
-      
+
 //       if (data) {
 //         setInvoiceData(data);
 //         const combinedDocString = `${docNum}-${docType}`;
 //         setScannedQR(combinedDocString);
-//         navigateToStep(targetStep, combinedDocString); 
+//         navigateToStep(targetStep, combinedDocString);
 //       }
-      
+
 //     } catch (err) {
 //       // 🚀 1. Get the exact error message from the backend API
 //       const backendMessage = err.response?.data?.message || err.message || "";
@@ -489,19 +522,19 @@ export default function DeliveryPage() {
 //       if (backendMessage.includes("already been posted")) {
 //         // Pass the docNum dynamic variable into the translation!
 //         setError(t("errors.alreadyPosted", { docNum: docNum }));
-//       } 
+//       }
 //       // 🚀 3. Intercept "Document not found"
 //       else if (backendMessage.includes("Document not found")) {
 //         setError(t("errors.invalidBarcode")); // Or use errors.documentRejected
-//       } 
+//       }
 //       // 🚀 4. Fallback for any other random server errors
 //       else {
-//         setError(t("errors.documentRejected")); 
+//         setError(t("errors.documentRejected"));
 //       }
 
 //       // 🚀 5. Kick back to Step 1 ONLY if they were scanning
 //       if (!isManual) {
-//         navigateToStep(1); 
+//         navigateToStep(1);
 //       }
 //     }
 //   };
@@ -812,7 +845,7 @@ export default function DeliveryPage() {
 //         <div className="flex-1 flex flex-col min-h-0 relative">
 //           {/* {loading ? (
 //             <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center rounded-2xl">
-//               <Spinner label="Posting Final Delivery..." />
+//
 //             </div>
 //           ) :  */}
 //           {/* {error ? (

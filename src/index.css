@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'); */
 
 @tailwind  base;
 @tailwind components;
@@ -33,12 +33,17 @@
     padding: 0;
   }
 
-  body {
-    font-family: 'Inter', system-ui, sans-serif;
+ body {
+    font-family: 'Inter', 'Noto Sans Tamil', system-ui, sans-serif;
     background-color: rgb(var(--background));
     color: rgb(var(--foreground));
     transition: background-color 0.3s ease, color 0.3s ease;
+    
+    /* PRO UX FIX: Forces crisp, smooth font rendering on mobile screens */
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    
     overscroll-behavior: none;
   }
 

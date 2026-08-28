@@ -43,7 +43,7 @@
       "switching": "மாற்றப்படுகிறது..."
     },
     "errors": {
-     "alreadyPosted": "பில் {{docNum}} ஏற்கனவே டெலிவரி செய்யப்பட்டுவிட்டது.",
+      "alreadyPosted": "பில் {{docNum}} ஏற்கனவே டெலிவரி செய்யப்பட்டுவிட்டது.",
       "invalidBarcode": "தவறான பார்கோடு. சரியான பில்லை ஸ்கேன் செய்யவும்.",
       "documentRejected": "ஏற்றுக்கொள்ளப்படவில்லை",
       "scanDifferent": "வேறொரு பில்லை ஸ்கேன் செய்",
@@ -84,7 +84,7 @@
     "success": {
       "title": "உறுதி செய்யப்பட்டது!",
       "docPrefix": "பில்",
-      "docSuffix": "வெற்றிகரமாக அப்டேட் செய்யப்பட்டது.",
+      "docSuffix": "வெற்றிகரமாக டெலிவரி செய்யப்பட்டது.",
       "nextBtn": "அடுத்த டெலிவரி"
     },
     "history": {
@@ -92,9 +92,18 @@
       "subtitle": "சமீபத்திய டெலிவரிகள்",
       "billNo": "பில் நம்பர்",
       "vehicle": "வண்டி",
-      "statusSuccess": "வெற்றி",
+      "statusSuccess": "டெலிவரி",
       "noData": "டெலிவரி எதுவும் இல்லை.",
       "today": "இன்று"
+    },
+    "login": {
+      "signIn": "உள்நுழைக",
+      "subtitle": "தொடர உங்கள் விவரங்களை உள்ளிடவும்",
+      "username": "பயனர்பெயர் (Username)",
+      "usernamePlaceholder": "பயனர்பெயர்",
+      "password": "கடவுச்சொல் (Password)",
+      "signInBtn": "உள்நுழைக",
+      "contactAdmin": "கடவுச்சொல் மறந்துவிட்டால் அட்மினை (Admin) தொடர்புகொள்ளவும்."
     },
     "themeToggle": "டார்க் மோடு (Dark Mode)"
   }

@@ -29,7 +29,7 @@
     "summary": {
       "title": "Today's Account",
       "open": "Pending",
-      "closed": "Completed",
+      "closed": "Delivered",
       "total": "Total"
     },
     "dropdown": {
@@ -84,7 +84,7 @@
     "success": {
       "title": "Confirmed!",
       "docPrefix": "Document",
-      "docSuffix": "has been securely posted.",
+      "docSuffix": "has been securely delivered.",
       "nextBtn": "Next Delivery"
     },
     "history": {
@@ -92,9 +92,18 @@
       "subtitle": "Your recent postings",
       "billNo": "Bill No",
       "vehicle": "Vehicle",
-      "statusSuccess": "Success",
+      "statusSuccess": "Delivered",
       "noData": "No deliveries found.",
       "today": "Today"
+    },
+    "login": {
+      "signIn": "Sign In",
+      "subtitle": "Enter your credentials to continue",
+      "username": "Username",
+      "usernamePlaceholder": "username",
+      "password": "Password",
+      "signInBtn": "Sign In",
+      "contactAdmin": "Contact admin if you forgot credentials."
     },
     "themeToggle": "Dark Mode"
   }

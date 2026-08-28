@@ -6,7 +6,7 @@ import { useDeliveryHistory } from "../../delivery/hooks/useDelivery";
 export default function HistoryPage() {
   const { t } = useTranslation();
   const user = useAuthStore((s) => s.user);
-  
+
   // 🚀 1. Fetch real data directly from your hook!
   const { data: historyData, isLoading } = useDeliveryHistory();
 
@@ -24,7 +24,10 @@ export default function HistoryPage() {
       date.getMonth() === today.getMonth() &&
       date.getFullYear() === today.getFullYear();
 
-    const time = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    const time = date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
     if (isToday) return `${t("history.today")}, ${time}`;
     return `${date.toLocaleDateString()} ${time}`;
   };
@@ -73,7 +76,10 @@ export default function HistoryPage() {
           {isLoading ? (
             // Loading Skeletons
             [1, 2, 3].map((n) => (
-              <div key={n} className="h-24 bg-card/40 rounded-2xl animate-pulse border border-white/5"></div>
+              <div
+                key={n}
+                className="h-24 bg-card/40 rounded-2xl animate-pulse border border-white/5"
+              ></div>
             ))
           ) : !historyData || historyData.length === 0 ? (
             // Empty State
@@ -85,25 +91,32 @@ export default function HistoryPage() {
             // History Cards
             historyData.map((item, index) => {
               const images = extractImages(item);
-              
+
               return (
                 <div
                   key={index}
                   className="bg-card/80 backdrop-blur-sm border border-white/10 rounded-2xl p-4 flex items-center gap-4 shadow-lg"
                 >
                   {/* 🚀 Image Thumbnail Box */}
-                  <div 
+                  <div
                     onClick={() => openViewer(images)}
                     className={`w-14 h-14 shrink-0 rounded-xl overflow-hidden flex gap-0.5 border border-white/10 bg-black/50 ${images.length > 0 ? "cursor-pointer active:scale-95 transition-transform" : ""}`}
                   >
                     {images.length > 0 ? (
                       // If images exist, map them side-by-side inside the box
                       images.map((imgUrl, i) => (
-                        <img key={i} src={imgUrl} alt="Proof" className="flex-1 object-cover h-full min-w-0" />
+                        <img
+                          key={i}
+                          src={imgUrl}
+                          alt="Proof"
+                          className="flex-1 object-cover h-full min-w-0"
+                        />
                       ))
                     ) : (
                       // Fallback checkmark if no images exist
-                      <div className="w-full h-full flex items-center justify-center text-emerald-400 bg-emerald-500/10">✓</div>
+                      <div className="w-full h-full flex items-center justify-center text-emerald-400 bg-emerald-500/10">
+                        ✓
+                      </div>
                     )}
                   </div>
 
@@ -116,7 +129,9 @@ export default function HistoryPage() {
                       </h3>
                       {/* Status Badge */}
                       <span className="text-[9px] uppercase tracking-wider font-bold bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full">
-                        {item.status || t("history.statusSuccess")}
+                        {item.status?.toLowerCase() === "closed" || !item.status
+                          ? t("history.statusSuccess")
+                          : item.status}
                       </span>
                     </div>
 
@@ -140,13 +155,12 @@ export default function HistoryPage() {
       {/* 🔴 FULL SCREEN IMAGE CAROUSEL MODAL */}
       {viewerImages && (
         <div className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl flex flex-col animate-fade-in">
-          
           {/* Top Bar with Close Button */}
           <div className="flex justify-between items-center p-4">
             <span className="text-white font-bold tracking-wide">
               {currentImageIndex + 1} / {viewerImages.length}
             </span>
-            <button 
+            <button
               onClick={() => setViewerImages(null)}
               className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
             >
@@ -156,9 +170,9 @@ export default function HistoryPage() {
 
           {/* Main Image Viewer */}
           <div className="flex-1 flex items-center justify-center p-4 overflow-hidden relative">
-            <img 
-              src={viewerImages[currentImageIndex]} 
-              alt="Delivery Proof" 
+            <img
+              src={viewerImages[currentImageIndex]}
+              alt="Delivery Proof"
               className="max-w-full max-h-full object-contain rounded-xl shadow-2xl"
             />
           </div>
@@ -166,14 +180,22 @@ export default function HistoryPage() {
           {/* Carousel Controls (Only show if there is more than 1 image) */}
           {viewerImages.length > 1 && (
             <div className="p-6 flex justify-center gap-6 pb-12">
-              <button 
-                onClick={() => setCurrentImageIndex((prev) => (prev > 0 ? prev - 1 : viewerImages.length - 1))}
+              <button
+                onClick={() =>
+                  setCurrentImageIndex((prev) =>
+                    prev > 0 ? prev - 1 : viewerImages.length - 1,
+                  )
+                }
                 className="px-6 py-3 rounded-xl bg-white/10 text-white font-bold active:bg-white/20 transition-colors"
               >
                 ← Prev
               </button>
-              <button 
-                onClick={() => setCurrentImageIndex((prev) => (prev < viewerImages.length - 1 ? prev + 1 : 0))}
+              <button
+                onClick={() =>
+                  setCurrentImageIndex((prev) =>
+                    prev < viewerImages.length - 1 ? prev + 1 : 0,
+                  )
+                }
                 className="px-6 py-3 rounded-xl bg-primary text-white font-bold active:bg-primary/80 transition-colors shadow-lg shadow-primary/20"
               >
                 Next →

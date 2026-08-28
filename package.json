@@ -1,17 +1,18 @@
 {
   "name": "frontend",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview --host"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.100.9",
     "axios": "^1.16.0",
+    "formik": "^2.4.9",
     "html5-qrcode": "^2.3.8",
     "i18next": "^26.1.0",
     "i18next-browser-languagedetector": "^8.2.1",
@@ -19,6 +20,7 @@
     "react-dom": "^19.2.5",
     "react-i18next": "^17.0.7",
     "react-router-dom": "^7.15.0",
+    "yup": "^1.7.1",
     "zustand": "^5.0.12"
   },
   "devDependencies": {

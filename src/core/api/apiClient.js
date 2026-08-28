@@ -41,13 +41,6 @@ apiClient.interceptors.response.use(
       useUIStore.getState().endRequest();
     }
 
-    // 3. Handle 401 Unauthorized
-    if (error.response?.status === 401) {
-      useAuthStore.getState().logout();
-      window.location.reload();
-      return Promise.reject(error);
-    }
-
     // 4. Extract exact error message from C# backend
     let errorMsg = "An unexpected error occurred.";
     if (error.response?.data?.errors) {
@@ -59,6 +52,16 @@ apiClient.interceptors.response.use(
       errorMsg = error.response.data.title;
     } else if (error.message) {
       errorMsg = error.message;
+    }
+
+    // 4. Handle 401 Unauthorized (Clear auth state, but DO NOT stop the code)
+    if (error.response?.status === 401) {
+      useAuthStore.getState().logout();
+      
+      // If you specifically want to customize the 401 message when the backend doesn't provide one:
+      if (!error.response?.data?.message) {
+        errorMsg = "Invalid username or password.";
+      }
     }
 
     // 5. Trigger the Global Error Banner!

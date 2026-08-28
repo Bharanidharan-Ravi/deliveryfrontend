@@ -1,55 +1,56 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import { VitePWA } from 'vite-plugin-pwa';
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { VitePWA } from "vite-plugin-pwa";
 import basicSsl from "@vitejs/plugin-basic-ssl";
+import packageJson from "./package.json";
 
 export default defineConfig({
   plugins: [
     react(),
-     basicSsl(),
+    basicSsl(),
     VitePWA({
-      registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
+      registerType: "autoUpdate",
+      includeAssets: ["favicon.ico", "apple-touch-icon.png"],
 
       manifest: {
-        name: 'Delivery App',
-        short_name: 'DeliveryApp',
-        description: 'Field delivery confirmation tool for delivery personnel',
-        theme_color: '#0a0f1e',
-        background_color: '#0a0f1e',
-        display: 'standalone',  
-        orientation: 'portrait',
-        start_url: '/',
-        scope: '/',
+        name: "Delivery App",
+        short_name: "DeliveryApp",
+        description: "Field delivery confirmation tool for delivery personnel",
+        theme_color: "#0a0f1e",
+        background_color: "#0a0f1e",
+        display: "standalone",
+        orientation: "portrait",
+        start_url: "/",
+        scope: "/",
         icons: [
           {
-            src: 'pwa-192x192.png',
-            sizes: '192x192',
-            type: 'image/png',
+            src: "pwa-192x192.png",
+            sizes: "192x192",
+            type: "image/png",
           },
           {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
+            src: "pwa-512x512.png",
+            sizes: "512x512",
+            type: "image/png",
           },
           {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any maskable',
+            src: "pwa-512x512.png",
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "any maskable",
           },
         ],
       },
 
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
         runtimeCaching: [
           {
             // API — NetworkFirst: try network, fall back to cache
             urlPattern: /^https?:\/\/.*\/api\/.*/i,
-            handler: 'NetworkFirst',
+            handler: "NetworkFirst",
             options: {
-              cacheName: 'api-cache',
+              cacheName: "api-cache",
               expiration: {
                 maxEntries: 50,
                 maxAgeSeconds: 60 * 60 * 24, // 24 hours
@@ -60,9 +61,9 @@ export default defineConfig({
           {
             // Static assets — CacheFirst
             urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp|woff2?)$/i,
-            handler: 'CacheFirst',
+            handler: "CacheFirst",
             options: {
-              cacheName: 'assets-cache',
+              cacheName: "assets-cache",
               expiration: {
                 maxEntries: 100,
                 maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
@@ -72,8 +73,8 @@ export default defineConfig({
           {
             // Google Fonts — StaleWhileRevalidate
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: 'StaleWhileRevalidate',
-            options: { cacheName: 'google-fonts-cache' },
+            handler: "StaleWhileRevalidate",
+            options: { cacheName: "google-fonts-cache" },
           },
         ],
       },
@@ -83,14 +84,17 @@ export default defineConfig({
       },
     }),
   ],
-
+  define: {
+    // 🚀 Securely inject ONLY the version number into the app
+    "import.meta.env.VITE_APP_VERSION": JSON.stringify(packageJson.version),
+  },
   server: {
     host: "0.0.0.0",
     https: true,
     port: 3000,
     proxy: {
-      '/api': {
-        target: 'http://localhost:5000',
+      "/api": {
+        target: "http://localhost:5000",
         changeOrigin: true,
       },
     },
